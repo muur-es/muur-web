@@ -427,13 +427,15 @@ if (wall) {
   const stick = wall.querySelector(".wall-stick"), opening = wall.querySelector(".opening"), box0 = wall.querySelector(".box0");
   const all = [...opening.querySelectorAll("img")];
   const final = all.find(i => i.classList.contains("final"));
-  const seq = all.filter(i => i !== final);
-  const pool = seq.filter(i => !/\/rup-/.test(i.getAttribute("src")) && !/nst-01|cal-01/.test(i.getAttribute("src")));
+  const rest = all.filter(i => i !== final);
+  const pool = rest.filter(i => !/\/rup-/.test(i.getAttribute("src")) && !/nst-01|cal-01/.test(i.getAttribute("src")));
   let last = null;
   try { last = localStorage.getItem("muur-start"); } catch (e) {}
   const choices = pool.filter(i => i.getAttribute("src") !== last);
   const start = choices[Math.floor(Math.random() * choices.length)] || pool[0];
   try { localStorage.setItem("muur-start", start.getAttribute("src")); } catch (e) {}
+  // the opening image is not shown a second time while scrolling
+  const seq = rest.filter(i => i !== start);
   let shown = all.find(i => i.classList.contains("on"));
   const show = el => { if (el === shown) return; shown.classList.remove("on"); el.classList.add("on"); shown = el; };
   show(start);
